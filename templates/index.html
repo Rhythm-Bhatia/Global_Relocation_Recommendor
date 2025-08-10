@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Relocation Analyzer API</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🌍 Global Relocation Analyzer API</h1>
+            <p>Migration analytics and country comparison service</p>
+        </header>
+        
+        <main class="main-content">
+            <div class="api-info">
+                <h2>API Endpoints</h2>
+                <div class="endpoint-grid">
+                    <div class="endpoint-card">
+                        <h3>GET /api/health</h3>
+                        <p>Check API health status</p>
+                        <button onclick="testEndpoint('/api/health', 'GET')">Test</button>
+                    </div>
+                    
+                    <div class="endpoint-card">
+                        <h3>GET /api/countries</h3>
+                        <p>Get all available countries</p>
+                        <button onclick="testEndpoint('/api/countries', 'GET')">Test</button>
+                    </div>
+                    
+                    <div class="endpoint-card">
+                        <h3>GET /api/professions</h3>
+                        <p>Get available professions</p>
+                        <button onclick="testEndpoint('/api/professions', 'GET')">Test</button>
+                    </div>
+                    
+                    <div class="endpoint-card">
+                        <h3>GET /api/visa-types</h3>
+                        <p>Get available visa types</p>
+                        <button onclick="testEndpoint('/api/visa-types', 'GET')">Test</button>
+                    </div>
+                    
+                    <div class="endpoint-card">
+                        <h3>POST /api/analyze</h3>
+                        <p>Analyze migration options</p>
+                        <button onclick="testAnalyzeEndpoint()">Test</button>
+                    </div>
+                    
+                    <div class="endpoint-card">
+                        <h3>GET /api/compare/{source}/{target}</h3>
+                        <p>Compare two countries</p>
+                        <button onclick="testEndpoint('/api/compare/IN/NL', 'GET')">Test</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="streamlit-info">
+                <h2>🚀 Access the Full Application</h2>
+                <p>For the complete interactive dashboard experience, run the Streamlit application:</p>
+                <div class="code-block">
+                    <code>streamlit run streamlit_app.py</code>
+                </div>
+                <p>Then visit <a href="http://localhost:8501" target="_blank">http://localhost:8501</a></p>
+            </div>
+            
+            <div class="response-area">
+                <h3>API Response</h3>
+                <pre id="response-output">Click any "Test" button above to see API responses here...</pre>
+            </div>
+        </main>
+    </div>
+    
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
