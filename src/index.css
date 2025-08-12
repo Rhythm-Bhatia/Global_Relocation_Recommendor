@@ -2,31 +2,120 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom slider styling */
-.slider::-webkit-slider-thumb {
-  appearance: none;
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  background: #14b8a6;
-  cursor: pointer;
-  border: 2px solid #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-.slider::-moz-range-thumb {
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  background: #14b8a6;
-  cursor: pointer;
-  border: 2px solid #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* Smooth transitions */
+/* Base styles */
 * {
-  transition: all 0.2s ease-in-out;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Custom slider styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-track {
+  background: transparent;
+  height: 12px;
+  border-radius: 6px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  border: 3px solid #14b8a6;
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+  transition: all 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(20, 184, 166, 0.4);
+}
+
+input[type="range"]::-moz-range-track {
+  background: transparent;
+  height: 12px;
+  border-radius: 6px;
+  border: none;
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  border: 3px solid #14b8a6;
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+  transition: all 0.2s ease;
+}
+
+/* Enhanced animations */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes progressFill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(--progress-width);
+  }
+}
+
+/* Apply animations */
+.animate-slide-in-up {
+  animation: slideInUp 0.6s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s ease-out;
+}
+
+.progress-bar {
+  animation: progressFill 1s ease-out;
 }
 
 /* Custom scrollbar */
@@ -41,103 +130,81 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: linear-gradient(135deg, #14b8a6, #0f766e);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: linear-gradient(135deg, #0f766e, #0d9488);
 }
 
 /* Enhanced card hover effects */
-.hover\:shadow-md:hover {
-  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Progress bar animations */
-@keyframes progressFill {
-  from {
-    width: 0%;
-  }
-  to {
-    width: var(--progress-width);
-  }
+.card-hover:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
 }
 
-.progress-bar {
-  animation: progressFill 0.8s ease-out;
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #14b8a6, #0f766e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* Responsive table styling */
-@media (max-width: 768px) {
-  .table-container {
-    font-size: 0.875rem;
-  }
-}
-
-/* Custom checkbox styling */
-input[type="checkbox"]:checked {
-  background-color: #14b8a6;
-  border-color: #14b8a6;
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 /* Enhanced focus states */
 select:focus,
 input:focus {
   outline: none;
-  ring: 2px;
-  ring-color: #14b8a6;
-  border-color: transparent;
+  ring: 3px;
+  ring-color: rgba(20, 184, 166, 0.3);
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
 }
 
-/* Sticky table headers */
-.sticky {
-  position: sticky;
-  z-index: 10;
+/* Button enhancements */
+button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Card animations */
-.card-hover {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+button:hover {
+  transform: translateY(-1px);
 }
 
-.card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+button:active {
+  transform: translateY(0);
 }
 
-/* Loading animations */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
+/* Custom checkbox styling */
+input[type="checkbox"]:checked {
+  background-color: #14b8a6;
+  border-color: #14b8a6;
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m13.854 3.646-7.5 7.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6 10.293l7.146-7.147a.5.5 0 0 1 .708.708z'/%3e%3c/svg%3e");
+}
+
+/* Loading spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
-  50% {
-    opacity: 0.5;
-  }
 }
 
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
 
-/* Gradient backgrounds */
-.gradient-bg {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-/* Custom badge styles */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* Responsive grid improvements */
+/* Responsive improvements */
 @media (max-width: 640px) {
   .grid-responsive {
     grid-template-columns: 1fr;
@@ -154,4 +221,79 @@ input:focus {
   .grid-responsive {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+
+/* Enhanced table styling */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+th, td {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+tr:hover {
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+/* Pulse animation for loading states */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Enhanced shadows */
+.shadow-soft {
+  box-shadow: 0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04);
+}
+
+.shadow-strong {
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15), 0 2px 10px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Text selection */
+::selection {
+  background-color: rgba(20, 184, 166, 0.2);
+  color: #0f766e;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+p {
+  line-height: 1.6;
+}
+
+/* Custom utilities */
+.text-balance {
+  text-wrap: balance;
+}
+
+.bg-mesh {
+  background-image: 
+    radial-gradient(at 40% 20%, hsla(28,100%,74%,1) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, hsla(189,100%,56%,1) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(355,100%,93%,1) 0px, transparent 50%),
+    radial-gradient(at 80% 50%, hsla(340,100%,76%,1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, hsla(22,100%,77%,1) 0px, transparent 50%),
+    radial-gradient(at 80% 100%, hsla(242,100%,70%,1) 0px, transparent 50%),
+    radial-gradient(at 0% 0%, hsla(343,100%,76%,1) 0px, transparent 50%);
 }

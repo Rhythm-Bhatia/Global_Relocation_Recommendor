@@ -12,31 +12,91 @@ export const calculateMigrationScore = (
     climateSuitability: preferences.climateSuitability / 10
   };
 
-  // Normalize metrics to 0-10 scale
-  const normalizedMetrics = {
-    economic: Math.min((country.metrics.gdpPerCapita / 10000) * 10 + (country.metrics.jobMarket / 10) * 10, 10) / 2,
-    quality: (country.metrics.healthcareQuality + country.metrics.educationQuality + (10 - country.metrics.costOfLiving / 10)) / 3,
-    safety: country.metrics.safetyIndex,
-    healthcare: country.metrics.healthcareQuality,
-    climate: country.metrics.climateScore
+  // Normalize GDP per capita (realistic range: $2,000 - $85,000)
+  const normalizedGDP = Math.min(10, Math.max(0, (country.metrics.gdpPerCapita - 2000) / 8300));
+  
+  // Calculate component scores with realistic scaling
+  const economicScore = (
+    normalizedGDP * 0.4 + 
+    (country.metrics.jobMarket / 10) * 10 * 0.4 + 
+    ((100 - country.metrics.taxRate) / 10) * 0.2
+  );
+
+  const qualityScore = (
+    (country.metrics.healthcareQuality / 10) * 10 * 0.3 +
+    (country.metrics.educationQuality / 10) * 10 * 0.25 +
+    (country.metrics.infrastructure / 10) * 10 * 0.25 +
+    Math.max(0, (120 - country.metrics.costOfLiving) / 12) * 0.2
+  );
+
+  const safetyScore = (country.metrics.safetyIndex / 10) * 10;
+  const healthcareScore = (country.metrics.healthcareQuality / 10) * 10;
+  const climateScore = (country.metrics.climateScore / 10) * 10;
+
+  // Calculate weighted base score
+  const baseScore = (
+    economicScore * weights.economicOpportunities +
+    qualityScore * weights.qualityOfLife +
+    safetyScore * weights.safetyAndSecurity +
+    healthcareScore * weights.healthcareQuality +
+    climateScore * weights.climateSuitability
+  ) / (weights.economicOpportunities + weights.qualityOfLife + weights.safetyAndSecurity + weights.healthcareQuality + weights.climateSuitability);
+
+  // Apply penalties for realistic scoring
+  let finalScore = baseScore;
+
+  // Visa difficulty penalty
+  const visaPenalties = {
+    'LOW': 0,
+    'MEDIUM': -0.8,
+    'HIGH': -1.5
   };
+  finalScore += visaPenalties[country.metrics.visaDifficulty] || -0.8;
 
-  // Calculate weighted score
-  const score = 
-    (normalizedMetrics.economic * weights.economicOpportunities) +
-    (normalizedMetrics.quality * weights.qualityOfLife) +
-    (normalizedMetrics.safety * weights.safetyAndSecurity) +
-    (normalizedMetrics.healthcare * weights.healthcareQuality) +
-    (normalizedMetrics.climate * weights.climateSuitability);
+  // Language barrier penalty (more significant impact)
+  finalScore -= (country.metrics.languageBarrier / 10) * 1.2;
 
-  // Apply visa difficulty penalty
-  const visaPenalty = {
-    LOW: 0,
-    MEDIUM: -0.5,
-    HIGH: -1.0
-  };
+  // Cost of living penalty for very expensive countries
+  if (country.metrics.costOfLiving > 100) {
+    finalScore -= (country.metrics.costOfLiving - 100) / 50;
+  }
 
-  const finalScore = Math.max(0, Math.min(10, score + visaPenalty[country.metrics.visaDifficulty]));
+  // Tax rate penalty for high tax countries
+  if (country.metrics.taxRate > 35) {
+    finalScore -= (country.metrics.taxRate - 35) / 20;
+  }
+
+  // Ensure realistic score distribution between 4.5 and 9.2
+  finalScore = Math.max(4.5, Math.min(9.2, finalScore));
+  
+  // Add small random variation to prevent identical scores
+  const variation = (Math.random() - 0.5) * 0.3;
+  finalScore += variation;
   
   return Math.round(finalScore * 10) / 10;
+};
+
+export const getComponentScores = (country: Country) => {
+  const normalizedGDP = Math.min(10, Math.max(0, (country.metrics.gdpPerCapita - 2000) / 8300));
+  
+  const economic = (
+    normalizedGDP * 0.4 + 
+    (country.metrics.jobMarket / 10) * 10 * 0.4 + 
+    ((100 - country.metrics.taxRate) / 10) * 0.2
+  );
+
+  const quality = (
+    (country.metrics.healthcareQuality / 10) * 10 * 0.3 +
+    (country.metrics.educationQuality / 10) * 10 * 0.25 +
+    (country.metrics.infrastructure / 10) * 10 * 0.25 +
+    Math.max(0, (120 - country.metrics.costOfLiving) / 12) * 0.2
+  );
+
+  const safety = (country.metrics.safetyIndex / 10) * 10;
+
+  return {
+    economic: Math.round(economic * 10) / 10,
+    quality: Math.round(quality * 10) / 10,
+    safety: Math.round(safety * 10) / 10
+  };
 };
